@@ -52,15 +52,15 @@
         false
         (map
           (fn [i]
-            (. (. results (item i)) -transcript))
-          (range 0 (dec (. results -length))))))
+            (aget (. results (item i)) "transcript"))
+          (range 0 (dec (aget results "length"))))))
 
     (defn retry [event]
       (. js/console (log event))
       (js/setTimeout (fn [] (.start recog)) 2000))
 
     (defn handle-result [event]
-      (let [alternatives (. (. event -results) (item 0) )]
+      (let [alternatives (. (aget event "results") item 0 )]
         (if (is-correct alternatives)
           (do (swap! app assoc :status-icon ["glyphicon-ok"])
               (js/setTimeout next-word 2000))
